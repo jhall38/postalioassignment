@@ -3,6 +3,8 @@ package com.postalioassign;
 import okhttp3.*;
 
 import java.io.IOException;
+import org.json.JSONObject;
+
 
 public class Part1 {
 
@@ -19,11 +21,14 @@ public class Part1 {
             Response response = httpClient.newCall(request).execute();
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
+            JSONObject obj = new JSONObject(response.body().string());
+
+            String text = obj.getJSONObject("parse").getJSONObject("text").toString();
+
             // Get response body
             int counter = 0;
             int lastIndex = 0;
 
-            String text = response.body().string();
             String target = "Cincinnati";
 
             while(lastIndex != -1){
